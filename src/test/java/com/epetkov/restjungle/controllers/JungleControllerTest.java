@@ -1,6 +1,7 @@
 package com.epetkov.restjungle.controllers;
 
 import com.epetkov.restjungle.Application;
+import com.epetkov.restjungle.data.dto.FoodDTO;
 import com.epetkov.restjungle.utils.URLc;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import static com.epetkov.restjungle.controllers.AbstractRestControllerTest.asJsonString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -28,6 +31,7 @@ class JungleControllerTest {
     public static final String ANIMAL = "Ape";
     public static final Integer LEGS = 2;
     public static final String FOOD = "leaves";
+    public static final String FOOD_NEW = "nuts";
     public static final String FAMILY = "mammal";
 
     @Autowired
@@ -85,5 +89,33 @@ class JungleControllerTest {
                 .andExpect(jsonPath("$[0].legs").value(2))
                 .andExpect(jsonPath("$[0].foodDTO.name").value(FOOD))
                 .andExpect(jsonPath("$[0].familyDTO.name").value(FAMILY));
+    }
+
+    @Test
+    void testCreateNewFoodOK() throws Exception {
+
+        FoodDTO foodDTO = new FoodDTO();
+        foodDTO.setName(FOOD_NEW);
+
+        mockMvc.perform(
+                        post(URLc.J_ANIMALS_URL + URLc.FOOD_URL)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(asJsonString(foodDTO)))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.name").value(FOOD_NEW));
+    }
+
+    @Test
+    void testCreateNewFoodFAIL() throws Exception {
+
+        FoodDTO foodDTO = new FoodDTO();
+        foodDTO.setName(FOOD);
+
+        mockMvc.perform(
+                        post(URLc.J_ANIMALS_URL + URLc.FOOD_URL)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(asJsonString(foodDTO)))
+                .andExpect(status().isBadRequest());
     }
 }
