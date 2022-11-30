@@ -50,6 +50,22 @@ public class AnimalServiceImpl implements AnimalService {
         return new ResponseEntity<>(animalDTOList, HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<AnimalDTO> getAnimalByName(String name) {
+
+        AnimalEntity animalEntity = animalRepository.findOneByName(name);
+        if (animalEntity != null) {
+
+            AnimalDTO animalDTO = animalEntityToAnimalDTO.convert(animalEntity);
+
+            LOG.info("Animal Found: " + Objects.requireNonNull(animalDTO).getName());
+            return new ResponseEntity<>(animalDTO, HttpStatus.OK);
+        }
+
+        LOG.error("Expected Animal NOT Found!");
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    }
+
     private List<AnimalEntity> getAnimalEntities() {
 
         return animalRepository.findAll();
