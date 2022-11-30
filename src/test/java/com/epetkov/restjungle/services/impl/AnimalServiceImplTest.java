@@ -1,11 +1,11 @@
 package com.epetkov.restjungle.services.impl;
 
-import com.epetkov.restjungle.data.converters.AnimalEntityToAnimalDTO;
+import com.epetkov.restjungle.data.converters.*;
 import com.epetkov.restjungle.data.dto.AnimalDTO;
 import com.epetkov.restjungle.data.dto.FoodDTO;
 import com.epetkov.restjungle.data.entities.AnimalEntity;
 import com.epetkov.restjungle.data.entities.FoodEntity;
-import com.epetkov.restjungle.repositories.AnimalRepository;
+import com.epetkov.restjungle.repositories.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,14 +31,31 @@ class AnimalServiceImplTest {
     AnimalRepository animalRepository;
 
     @Mock
+    FoodRepository foodRepository;
+
+    @Mock
+    FamilyRepository familyRepository;
+
+    @Mock
+    FoodEntityToFoodDTO foodEntityToFoodDTO;
+
+    @Mock
     AnimalEntityToAnimalDTO animalEntityToAnimalDTO;
+
+    @Mock
+    FamilyEntityToFamilyDTO familyEntityToFamilyDTO;
+
+    @Mock
+    AnimalDtoToAnimalEntity animalDtoToAnimalEntity;
 
     @BeforeEach
     void setUp() {
 
         MockitoAnnotations.openMocks(this);
 
-        animalService = new AnimalServiceImpl(animalRepository, animalEntityToAnimalDTO);
+        animalService = new AnimalServiceImpl(animalRepository, foodRepository, familyRepository,
+                                              foodEntityToFoodDTO, familyEntityToFamilyDTO,
+                                              animalEntityToAnimalDTO, animalDtoToAnimalEntity);
     }
 
     @Test

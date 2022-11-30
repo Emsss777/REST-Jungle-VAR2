@@ -11,4 +11,6 @@ public interface AnimalService {
     ResponseEntity<AnimalDTO> getAnimalByName(String name);
 
     ResponseEntity<List<AnimalDTO>> getAnimalsByFoodName(String food);
+
+    ResponseEntity<AnimalDTO> createNewAnimal(AnimalDTO animalDTO);
 }

@@ -45,8 +45,7 @@ class FoodServiceImplTest {
         FoodDTO savedFoodDTO = foodService.createNewFood(testFoodDTO).getBody();
 
         assertNotNull(savedFoodDTO);
-        assertEquals(testFoodDTO.getId(), savedFoodDTO.getId());
-        assertEquals(testFoodDTO.getName(), savedFoodDTO.getName());
+        assertEquals(FOOD_NEW, savedFoodDTO.getName());
     }
 
     @Test

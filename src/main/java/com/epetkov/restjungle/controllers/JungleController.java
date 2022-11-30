@@ -64,4 +64,15 @@ public class JungleController {
 
         return foodService.createNewFood(foodDTO);
     }
+
+    /**
+     * Returns a new type of Animal.
+     * @param animalDTO ;
+     * @return Object (AnimalDTO)
+     */
+    @PostMapping(URLc.ANIMAL_URL)
+    public ResponseEntity<AnimalDTO> createNewAnimal(@RequestBody AnimalDTO animalDTO) {
+
+        return animalService.createNewAnimal(animalDTO);
+    }
 }
