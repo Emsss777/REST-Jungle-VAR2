@@ -161,6 +161,19 @@ public class AnimalServiceImpl implements AnimalService {
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 
+    @Override
+    public ResponseEntity<List<AnimalDTO>> deleteAnimalByName(String name) {
+
+        AnimalEntity foundAnimal = animalRepository.findOneByName(name);
+        if (foundAnimal != null) {
+
+            AnimalEntity savedAnimal = animalRepository.findOneById(foundAnimal.getId());
+            animalRepository.deleteById(savedAnimal.getId());
+        }
+
+        return getAllAnimals();
+    }
+
     private List<AnimalEntity> getAnimalEntities() {
 
         return animalRepository.findAll();

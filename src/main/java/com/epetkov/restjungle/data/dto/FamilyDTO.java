@@ -11,4 +11,9 @@ public class FamilyDTO {
 
     private Integer id;
     private String name;
+
+    public FamilyDTO(String name) {
+
+        this.name = name;
+    }
 }

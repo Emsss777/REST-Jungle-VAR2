@@ -38,7 +38,7 @@ public class AnimalServiceIT {
     AnimalEntityToAnimalDTO animalEntityToAnimalDTO;
 
     @Test
-    public void testCreateNewAnimalOK() {
+    void testCreateNewAnimalOK() {
 
         List<AnimalEntity> animals = animalRepository.findAll();
         AnimalEntity testAnimalEntity = animals.iterator().next();
@@ -64,7 +64,7 @@ public class AnimalServiceIT {
     }
 
     @Test
-    public void testCreateNewAnimalFAIL() {
+    void testCreateNewAnimalFAIL() {
 
         List<AnimalEntity> animals = animalRepository.findAll();
         AnimalEntity testAnimalEntity = animals.iterator().next();

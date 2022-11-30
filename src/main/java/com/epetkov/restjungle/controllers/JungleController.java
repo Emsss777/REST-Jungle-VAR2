@@ -75,4 +75,15 @@ public class JungleController {
 
         return animalService.createNewAnimal(animalDTO);
     }
+
+    /**
+     * Deletes an Animal by ID and returns a List of the remaining Animals.
+     * @param animal ;
+     * @return ArrayList (AnimalDTO) ;
+     */
+    @DeleteMapping(URLc.ANIMAL_PARAM)
+    public ResponseEntity<List<AnimalDTO>> deleteAnimalByName(@PathVariable String animal) {
+
+        return animalService.deleteAnimalByName(animal);
+    }
 }

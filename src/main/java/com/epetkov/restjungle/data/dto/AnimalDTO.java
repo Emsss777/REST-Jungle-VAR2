@@ -14,4 +14,12 @@ public class AnimalDTO {
     private Integer legs;
     private FoodDTO foodDTO;
     private FamilyDTO familyDTO;
+
+    public AnimalDTO(String name, Integer legs, FoodDTO foodDTO, FamilyDTO familyDTO) {
+
+        this.name = name;
+        this.legs = legs;
+        this.foodDTO = foodDTO;
+        this.familyDTO = familyDTO;
+    }
 }

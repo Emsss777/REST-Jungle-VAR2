@@ -22,6 +22,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class AnimalServiceImplTest {
 
+    public static final Integer ID = 2;
     public static final String ANIMAL = "Koala";
     public static final String FOOD = "leaves";
 
@@ -119,5 +120,22 @@ class AnimalServiceImplTest {
 
         assertNotNull(animalDtoByFoodName);
         assertEquals(2, animalDtoByFoodName.size());
+    }
+
+    @Test
+    void testDeleteAnimalByName() {
+
+        AnimalEntity animalEntity = new AnimalEntity();
+        animalEntity.setId(ID);
+        animalEntity.setName(ANIMAL);
+
+        when(animalRepository.findOneByName(ANIMAL)).thenReturn(animalEntity);
+
+        when(animalRepository.findOneById(ID)).thenReturn(animalEntity);
+
+        animalService.deleteAnimalByName(ANIMAL);
+
+        verify(animalRepository, times(1)).findOneByName(anyString());
+        verify(animalRepository, times(1)).deleteById(anyInt());
     }
 }

@@ -1,12 +1,14 @@
 package com.epetkov.restjungle.controllers;
 
 import com.epetkov.restjungle.Application;
-import com.epetkov.restjungle.data.dto.FoodDTO;
+import com.epetkov.restjungle.data.dto.*;
+import com.epetkov.restjungle.services.interfaces.AnimalService;
 import com.epetkov.restjungle.utils.URLc;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.MockitoAnnotations;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -17,8 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import static com.epetkov.restjungle.controllers.AbstractRestControllerTest.asJsonString;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -29,10 +32,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class JungleControllerTest {
 
     public static final String ANIMAL = "Ape";
+    public static final String ANIMAL_NEW = "Koala";
     public static final Integer LEGS = 2;
     public static final String FOOD = "leaves";
     public static final String FOOD_NEW = "nuts";
     public static final String FAMILY = "mammal";
+
+    @Mock
+    AnimalService animalService;
+
+    @InjectMocks
+    JungleController jungleController;
 
     @Autowired
     protected WebApplicationContext webApplicationContext;
@@ -41,8 +51,6 @@ class JungleControllerTest {
 
     @BeforeEach
     void setUp() {
-
-        MockitoAnnotations.openMocks(this);
 
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
@@ -117,5 +125,44 @@ class JungleControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(asJsonString(foodDTO)))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void testCreateNewAnimalOK() throws Exception {
+
+        AnimalDTO animalDTO = new AnimalDTO(ANIMAL_NEW, 4, new FoodDTO(FOOD), new FamilyDTO(FAMILY));
+
+        mockMvc.perform(
+                        post(URLc.J_ANIMALS_URL + URLc.ANIMAL_URL)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(asJsonString(animalDTO)))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.name").value(ANIMAL_NEW));
+    }
+
+    @Test
+    void testCreateNewAnimalFAIL() throws Exception {
+
+        AnimalDTO animalDTO = new AnimalDTO(ANIMAL, 4, new FoodDTO(FOOD), new FamilyDTO(FAMILY));
+
+        mockMvc.perform(
+                        post(URLc.J_ANIMALS_URL + URLc.ANIMAL_URL)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(asJsonString(animalDTO)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void testDeleteAnimalByName() throws Exception {
+
+        mockMvc = MockMvcBuilders.standaloneSetup(jungleController).build();
+
+        mockMvc.perform(
+                        delete(URLc.J_ANIMALS_URL + URLc.ANIMAL_PARAM, ANIMAL)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        verify(animalService).deleteAnimalByName(anyString());
     }
 }

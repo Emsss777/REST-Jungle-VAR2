@@ -11,4 +11,9 @@ public class FoodDTO {
 
     private Integer id;
     private String name;
+
+    public FoodDTO(String name) {
+
+        this.name = name;
+    }
 }
