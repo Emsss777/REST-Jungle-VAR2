@@ -1,6 +1,6 @@
 # Java RESTful API with Spring Boot
 
-RESTful API using Spring Boot 3, JPA, Hibernate, DTOs, H2 Database, Lombok and JUnit 5 Test.
+RESTful API using Spring Boot 3, JPA, Hibernate, DTOs, DAOs, H2 Database, Lombok and JUnit 5 Test.
 
 ### Functionality:
 
