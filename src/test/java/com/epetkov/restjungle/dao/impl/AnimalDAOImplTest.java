@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.Objects;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,6 +30,18 @@ class AnimalDAOImplTest {
 
         assertThat(animalDTOList).isNotNull();
         assertEquals(7, animalDTOList.size());
+    }
+
+    @Test
+    void testGetAnimalByID() {
+
+        AnimalDTO animalDTO = animalDAO.getAnimalByID(3).getBody();
+
+        assertThat(animalDTO).isNotNull();
+        assertEquals("Deer", animalDTO.getName());
+        assertEquals(4, animalDTO.getLegs());
+        assertEquals("leaves", animalDTO.getFoodDTO().getName());
+        assertEquals("mammal", animalDTO.getFamilyDTO().getName());
     }
 
     @Test
@@ -55,18 +68,48 @@ class AnimalDAOImplTest {
     @Test
     void testCreateNewAnimalOK() {
 
-        // Todo: impl
+        AnimalDTO animalDTO =
+                new AnimalDTO("Donkey", 4, new FoodDTO("leaves"), new FamilyDTO("mammal"));
+
+        AnimalDTO savedAnimal = animalDAO.createNewAnimal(animalDTO).getBody();
+
+        assertThat(savedAnimal).isNotNull();
+        assertEquals("Donkey", savedAnimal.getName());
+        assertEquals(2, savedAnimal.getFoodDTO().getId());
+        assertEquals(1, savedAnimal.getFamilyDTO().getId());
+
+        animalDAO.deleteAnimalByName(Objects.requireNonNull(savedAnimal).getName()).getBody();
     }
 
     @Test
     void testCreateNewAnimalFAIL() {
 
-        // Todo: impl
+        AnimalDTO animalDTO =
+                new AnimalDTO("Deer", 4, new FoodDTO("leaves"), new FamilyDTO("mammal"));
+
+        AnimalDTO savedAnimal = animalDAO.createNewAnimal(animalDTO).getBody();
+
+        assertThat(savedAnimal).isNull();
     }
 
     @Test
-    void testDeleteAnimalByName() {
+    void testDeleteAnimalByNameOK() {
 
-        // Todo: impl
+        AnimalDTO animalDTO =
+                new AnimalDTO("Donkey", 4, new FoodDTO("leaves"), new FamilyDTO("mammal"));
+
+        AnimalDTO savedAnimal = animalDAO.createNewAnimal(animalDTO).getBody();
+
+        Boolean result = animalDAO.deleteAnimalByName(Objects.requireNonNull(savedAnimal).getName()).getBody();
+
+        assertEquals(Boolean.TRUE, result);
+    }
+
+    @Test
+    void testDeleteAnimalByNameFAIL() {
+
+        Boolean result = animalDAO.deleteAnimalByName("Monkey").getBody();
+
+        assertEquals(Boolean.FALSE, result);
     }
 }
