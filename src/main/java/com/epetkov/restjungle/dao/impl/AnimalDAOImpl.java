@@ -8,8 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class AnimalDAOImpl implements AnimalDAO {
@@ -178,6 +177,36 @@ public class AnimalDAOImpl implements AnimalDAO {
             return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(true, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Integer>> countLegsByFoodAndFamilyNames(String name) {
+
+        String sqlQuery = null;
+        if (Objects.equals(name, "FOOD")) {
+
+            sqlQuery = SQLs.COUNT_LEGS_BY_FOOD;
+
+        } else if (Objects.equals(name, "FAMILY")) {
+
+            sqlQuery = SQLs.COUNT_LEGS_BY_FAMILY;
+        }
+
+        Map<String, Integer> resultMap = new HashMap<>();
+        try {
+            Connection connection = connectH2.getConnection();
+            PreparedStatement ps = connection.prepareStatement(sqlQuery);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+
+                resultMap.put(rs.getString(name), rs.getInt("SUM_OF_LEGS"));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 
     private AnimalDTO getAnimalFromRS(ResultSet rs) throws SQLException {

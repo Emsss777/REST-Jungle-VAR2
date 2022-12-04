@@ -3,16 +3,17 @@ package com.epetkov.restjungle.dao.impl;
 import com.epetkov.restjungle.Application;
 import com.epetkov.restjungle.dao.interfaces.*;
 import com.epetkov.restjungle.data.dto.*;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.data.MapEntry.entry;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
@@ -111,5 +112,34 @@ class AnimalDAOImplTest {
         Boolean result = animalDAO.deleteAnimalByName("Monkey").getBody();
 
         assertEquals(Boolean.FALSE, result);
+    }
+
+    @Test
+    void testCountLegsByFoodNames() {
+
+        Map<String, Integer> savedMap = animalDAO.countLegsByFoodAndFamilyNames("FOOD").getBody();
+
+        Assertions.assertThat(savedMap).isNotEmpty().hasSize(5)
+                .containsExactly(
+                        entry("leaves", 6),
+                        entry("birdseed", 2),
+                        entry("insects", 8),
+                        entry("carrot", 4),
+                        entry("vermin", 4)
+                );
+    }
+
+    @Test
+    void testCountLegsByFamilyNames() {
+
+        Map<String, Integer> savedMap = animalDAO.countLegsByFoodAndFamilyNames("FAMILY").getBody();
+
+        Assertions.assertThat(savedMap).isNotEmpty().hasSize(4)
+                .containsExactly(
+                        entry("mammal", 10),
+                        entry("arthropod", 8),
+                        entry("reptile", 4),
+                        entry("birds", 2)
+                );
     }
 }

@@ -93,6 +93,28 @@ public class FoodDAOImpl implements FoodDAO {
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 
+    @Override
+    public ResponseEntity<Boolean> deleteFoodByName(String name) {
+
+        try {
+            Connection connection = connectH2.getConnection();
+            PreparedStatement ps = connection.prepareStatement(SQLs.DELETE_FOOD_BY_NAME);
+
+            FoodDTO confirmFood = this.getFoodByName(name).getBody();
+            if (confirmFood == null) {
+
+                return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+            }
+            ps.setString(1, name);
+            ps.execute();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(true, HttpStatus.OK);
+    }
+
     private FoodDTO getFoodFromRS(ResultSet rs) throws SQLException {
 
         Integer foodID = rs.getInt("id");

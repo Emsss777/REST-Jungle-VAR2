@@ -10,4 +10,6 @@ public interface FoodDAO {
     ResponseEntity<FoodDTO> getFoodByName(String name);
 
     ResponseEntity<FoodDTO> createNewFood(FoodDTO foodDTO);
+
+    ResponseEntity<Boolean> deleteFoodByName(String name);
 }
