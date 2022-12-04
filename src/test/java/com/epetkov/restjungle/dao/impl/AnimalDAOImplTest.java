@@ -36,7 +36,7 @@ class AnimalDAOImplTest {
     @Test
     void testGetAnimalByID() {
 
-        AnimalDTO animalDTO = animalDAO.getAnimalByID(3).getBody();
+        AnimalDTO animalDTO = animalDAO.getOneByID(3).getBody();
 
         assertThat(animalDTO).isNotNull();
         assertEquals("Deer", animalDTO.getName());
@@ -48,7 +48,7 @@ class AnimalDAOImplTest {
     @Test
     void testGetAnimalByName() {
 
-        AnimalDTO animalDTO = animalDAO.getAnimalByName("Deer").getBody();
+        AnimalDTO animalDTO = animalDAO.getOneByName("Deer").getBody();
         
         assertThat(animalDTO).isNotNull();
         assertEquals(3, animalDTO.getId());

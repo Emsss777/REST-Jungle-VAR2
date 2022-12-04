@@ -30,7 +30,7 @@ class FoodFamilyDAOImplTest {
     @Test
     void testGetFoodByID() {
 
-        FoodDTO foodDTO = foodDAO.getFoodByID(2).getBody();
+        FoodDTO foodDTO = foodDAO.getOneByID(2).getBody();
 
         assertThat(foodDTO).isNotNull();
         assertEquals("leaves", foodDTO.getName());
@@ -39,7 +39,7 @@ class FoodFamilyDAOImplTest {
     @Test
     void testGetFoodByName() {
 
-        FoodDTO foodDTO = foodDAO.getFoodByName("leaves").getBody();
+        FoodDTO foodDTO = foodDAO.getOneByName("leaves").getBody();
 
         assertThat(foodDTO).isNotNull();
         assertEquals(2, foodDTO.getId());
@@ -74,7 +74,7 @@ class FoodFamilyDAOImplTest {
     @Test
     void testGetFamilyByID() {
 
-        FamilyDTO familyDTO = familyDAO.getFamilyByID(1).getBody();
+        FamilyDTO familyDTO = familyDAO.getOneByID(1).getBody();
 
         assertThat(familyDTO).isNotNull();
         assertEquals("mammal", familyDTO.getName());
@@ -83,7 +83,7 @@ class FoodFamilyDAOImplTest {
     @Test
     void testGetFamilyByName() {
 
-        FamilyDTO familyDTO = familyDAO.getFamilyByName("mammal").getBody();
+        FamilyDTO familyDTO = familyDAO.getOneByName("mammal").getBody();
 
         assertThat(familyDTO).isNotNull();
         assertEquals(1, familyDTO.getId());

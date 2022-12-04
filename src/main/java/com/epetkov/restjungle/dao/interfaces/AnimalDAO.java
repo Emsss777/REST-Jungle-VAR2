@@ -5,13 +5,9 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 import java.util.Map;
 
-public interface AnimalDAO {
+public interface AnimalDAO extends BaseRepDAO<AnimalDTO> {
 
     ResponseEntity<List<AnimalDTO>> getAllAnimals();
-
-    ResponseEntity<AnimalDTO> getAnimalByID(Integer id);
-
-    ResponseEntity<AnimalDTO> getAnimalByName(String name);
 
     ResponseEntity<List<AnimalDTO>> getAnimalsByFoodName(String food);
 

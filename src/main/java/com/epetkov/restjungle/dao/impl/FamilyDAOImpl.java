@@ -3,7 +3,6 @@ package com.epetkov.restjungle.dao.impl;
 import com.epetkov.restjungle.dao.ConnectH2;
 import com.epetkov.restjungle.dao.interfaces.FamilyDAO;
 import com.epetkov.restjungle.data.dto.FamilyDTO;
-import com.epetkov.restjungle.data.dto.FoodDTO;
 import com.epetkov.restjungle.utils.SQLs;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,7 @@ public class FamilyDAOImpl implements FamilyDAO {
     }
 
     @Override
-    public ResponseEntity<FamilyDTO> getFamilyByID(Integer id) {
+    public ResponseEntity<FamilyDTO> getOneByID(Integer id) {
 
         try {
             Connection connection = connectH2.getConnection();
@@ -41,7 +40,7 @@ public class FamilyDAOImpl implements FamilyDAO {
     }
 
     @Override
-    public ResponseEntity<FamilyDTO> getFamilyByName(String name) {
+    public ResponseEntity<FamilyDTO> getOneByName(String name) {
 
         try {
             Connection connection = connectH2.getConnection();

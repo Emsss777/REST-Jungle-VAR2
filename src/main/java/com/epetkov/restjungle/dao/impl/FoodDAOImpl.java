@@ -20,7 +20,7 @@ public class FoodDAOImpl implements FoodDAO {
     }
 
     @Override
-    public ResponseEntity<FoodDTO> getFoodByID(Integer id) {
+    public ResponseEntity<FoodDTO> getOneByID(Integer id) {
 
         try {
             Connection connection = connectH2.getConnection();
@@ -40,7 +40,7 @@ public class FoodDAOImpl implements FoodDAO {
     }
 
     @Override
-    public ResponseEntity<FoodDTO> getFoodByName(String name) {
+    public ResponseEntity<FoodDTO> getOneByName(String name) {
 
         try {
             Connection connection = connectH2.getConnection();
@@ -66,7 +66,7 @@ public class FoodDAOImpl implements FoodDAO {
             Connection connection = connectH2.getConnection();
             PreparedStatement ps = connection.prepareStatement(SQLs.INSERT_NEW_FOOD);
 
-            FoodDTO confirmFood = this.getFoodByName(foodDTO.getName()).getBody();
+            FoodDTO confirmFood = this.getOneByName(foodDTO.getName()).getBody();
             if (confirmFood != null) {
 
                 return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -80,7 +80,7 @@ public class FoodDAOImpl implements FoodDAO {
             if (rs.next()) {
 
                 Integer savedID = rs.getInt(1);
-                FoodDTO savedFood = this.getFoodByID(savedID).getBody();
+                FoodDTO savedFood = this.getOneByID(savedID).getBody();
 
                 return new ResponseEntity<>(savedFood, HttpStatus.OK);
             }
@@ -100,7 +100,7 @@ public class FoodDAOImpl implements FoodDAO {
             Connection connection = connectH2.getConnection();
             PreparedStatement ps = connection.prepareStatement(SQLs.DELETE_FOOD_BY_NAME);
 
-            FoodDTO confirmFood = this.getFoodByName(name).getBody();
+            FoodDTO confirmFood = this.getOneByName(name).getBody();
             if (confirmFood == null) {
 
                 return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);

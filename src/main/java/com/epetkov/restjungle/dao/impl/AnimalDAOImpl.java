@@ -45,7 +45,7 @@ public class AnimalDAOImpl implements AnimalDAO {
     }
 
     @Override
-    public ResponseEntity<AnimalDTO> getAnimalByID(Integer id) {
+    public ResponseEntity<AnimalDTO> getOneByID(Integer id) {
 
         try {
             Connection connection = connectH2.getConnection();
@@ -65,7 +65,7 @@ public class AnimalDAOImpl implements AnimalDAO {
     }
 
     @Override
-    public ResponseEntity<AnimalDTO> getAnimalByName(String name) {
+    public ResponseEntity<AnimalDTO> getOneByName(String name) {
 
         try {
             Connection connection = connectH2.getConnection();
@@ -116,7 +116,7 @@ public class AnimalDAOImpl implements AnimalDAO {
             Connection connection = connectH2.getConnection();
             PreparedStatement ps = connection.prepareStatement(SQLs.INSERT_NEW_ANIMAL);
 
-            AnimalDTO confirmAnimal = this.getAnimalByName(animalName).getBody();
+            AnimalDTO confirmAnimal = this.getOneByName(animalName).getBody();
             if (confirmAnimal != null) {
 
                 return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -124,14 +124,14 @@ public class AnimalDAOImpl implements AnimalDAO {
             ps.setString(1, animalDTO.getName());
             ps.setInt(2, animalDTO.getLegs());
 
-            FoodDTO confirmFood = foodDAO.getFoodByName(foodName).getBody();
+            FoodDTO confirmFood = foodDAO.getOneByName(foodName).getBody();
             if (confirmFood == null) {
 
                 return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
             }
             ps.setInt(3, confirmFood.getId());
 
-            FamilyDTO confirmFamily = familyDAO.getFamilyByName(familyName).getBody();
+            FamilyDTO confirmFamily = familyDAO.getOneByName(familyName).getBody();
             if (confirmFamily == null) {
 
                 return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -144,7 +144,7 @@ public class AnimalDAOImpl implements AnimalDAO {
             if (rs.next()) {
 
                 Integer savedID = rs.getInt(1);
-                AnimalDTO savedAnimal = this.getAnimalByID(savedID).getBody();
+                AnimalDTO savedAnimal = this.getOneByID(savedID).getBody();
 
                 return new ResponseEntity<>(savedAnimal, HttpStatus.OK);
             }
@@ -164,7 +164,7 @@ public class AnimalDAOImpl implements AnimalDAO {
             Connection connection = connectH2.getConnection();
             PreparedStatement ps = connection.prepareStatement(SQLs.DELETE_ANIMAL_BY_NAME);
 
-            AnimalDTO confirmAnimal = this.getAnimalByName(name).getBody();
+            AnimalDTO confirmAnimal = this.getOneByName(name).getBody();
             if (confirmAnimal == null) {
 
                 return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
@@ -221,8 +221,8 @@ public class AnimalDAOImpl implements AnimalDAO {
         animal.setId(animalID);
         animal.setName(animalName);
         animal.setLegs(legs);
-        animal.setFoodDTO(foodDAO.getFoodByID(foodId).getBody());
-        animal.setFamilyDTO(familyDAO.getFamilyByID(familyId).getBody());
+        animal.setFoodDTO(foodDAO.getOneByID(foodId).getBody());
+        animal.setFamilyDTO(familyDAO.getOneByID(familyId).getBody());
 
         return animal;
     }
