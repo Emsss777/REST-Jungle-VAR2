@@ -36,9 +36,36 @@ class FoodFamilyDAOImplTest {
     }
 
     @Test
-    void testCreateNewFood() {
+    void testGetFoodByName() {
 
-        // Todo: impl
+        FoodDTO foodDTO = foodDAO.getFoodByName("leaves").getBody();
+
+        assertThat(foodDTO).isNotNull();
+        assertEquals(2, foodDTO.getId());
+        assertEquals("leaves", foodDTO.getName());
+    }
+
+    @Test
+    void testCreateNewFoodOK() {
+
+        FoodDTO foodDTO = new FoodDTO();
+        foodDTO.setName("honey");
+
+        FoodDTO savedFood = foodDAO.createNewFood(foodDTO).getBody();
+
+        assertThat(savedFood).isNotNull();
+        assertEquals("honey", savedFood.getName());
+    }
+
+    @Test
+    void testCreateNewFoodFAIL() {
+
+        FoodDTO foodDTO = new FoodDTO();
+        foodDTO.setName("leaves");
+
+        FoodDTO savedFood = foodDAO.createNewFood(foodDTO).getBody();
+
+        assertThat(savedFood).isNull();
     }
 
     @Test
@@ -47,6 +74,16 @@ class FoodFamilyDAOImplTest {
         FamilyDTO familyDTO = familyDAO.getFamilyByID(1).getBody();
 
         assertThat(familyDTO).isNotNull();
+        assertEquals("mammal", familyDTO.getName());
+    }
+
+    @Test
+    void testGetFamilyByName() {
+
+        FamilyDTO familyDTO = familyDAO.getFamilyByName("mammal").getBody();
+
+        assertThat(familyDTO).isNotNull();
+        assertEquals(1, familyDTO.getId());
         assertEquals("mammal", familyDTO.getName());
     }
 }

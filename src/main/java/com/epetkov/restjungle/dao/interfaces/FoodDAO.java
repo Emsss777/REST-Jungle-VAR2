@@ -7,5 +7,7 @@ public interface FoodDAO {
 
     ResponseEntity<FoodDTO> getFoodByID(Integer id);
 
+    ResponseEntity<FoodDTO> getFoodByName(String name);
+
     ResponseEntity<FoodDTO> createNewFood(FoodDTO foodDTO);
 }

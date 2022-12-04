@@ -9,4 +9,3 @@ RESTful API using Spring Boot 3, JPA, Hibernate, DTOs, DAOs, H2 Database, Lombok
 - Creating a new type of Food and a new type of Animal.
 - Deleting an Animal by Name.
 - Returns a Number of Legs calculated by Food and Family, considering that there are Animals Excluded.
-- Using Swagger - Customizing Endpoint Documentation.

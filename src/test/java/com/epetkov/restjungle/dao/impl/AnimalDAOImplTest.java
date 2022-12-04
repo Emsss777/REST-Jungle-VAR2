@@ -53,7 +53,13 @@ class AnimalDAOImplTest {
     }
 
     @Test
-    void testCreateNewAnimal() {
+    void testCreateNewAnimalOK() {
+
+        // Todo: impl
+    }
+
+    @Test
+    void testCreateNewAnimalFAIL() {
 
         // Todo: impl
     }

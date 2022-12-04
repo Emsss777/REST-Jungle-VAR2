@@ -3,6 +3,7 @@ package com.epetkov.restjungle.dao.impl;
 import com.epetkov.restjungle.dao.ConnectH2;
 import com.epetkov.restjungle.dao.interfaces.FamilyDAO;
 import com.epetkov.restjungle.data.dto.FamilyDTO;
+import com.epetkov.restjungle.data.dto.FoodDTO;
 import com.epetkov.restjungle.utils.SQLs;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,26 @@ public class FamilyDAOImpl implements FamilyDAO {
             Connection connection = connectH2.getConnection();
             PreparedStatement ps = connection.prepareStatement(SQLs.SELECT_FAMILY_BY_ID);
             ps.setInt(1, id);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+
+                return new ResponseEntity<>(getFamilyFromRS(rs), HttpStatus.OK);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    }
+
+    @Override
+    public ResponseEntity<FamilyDTO> getFamilyByName(String name) {
+
+        try {
+            Connection connection = connectH2.getConnection();
+            PreparedStatement ps = connection.prepareStatement(SQLs.SELECT_FAMILY_BY_NAME);
+            ps.setString(1, name);
 
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {

@@ -52,8 +52,8 @@ public class AnimalDAOImpl implements AnimalDAO {
             Connection connection = connectH2.getConnection();
             PreparedStatement ps = connection.prepareStatement(SQLs.SELECT_ANIMAL_BY_NAME);
             ps.setString(1, name);
-            ResultSet rs = ps.executeQuery();
 
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
 
                 return new ResponseEntity<>(getAnimalFromRS(rs), HttpStatus.OK);

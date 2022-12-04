@@ -6,4 +6,6 @@ import org.springframework.http.ResponseEntity;
 public interface FamilyDAO {
 
     ResponseEntity<FamilyDTO> getFamilyByID(Integer id);
+
+    ResponseEntity<FamilyDTO> getFamilyByName(String name);
 }
