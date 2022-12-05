@@ -24,6 +24,7 @@ class AnimalServiceImplTest {
 
     public static final Integer ID = 2;
     public static final String ANIMAL = "Koala";
+    public static final String ANIMAL_FAIL = "Monkey";
     public static final String FOOD = "leaves";
 
     AnimalServiceImpl animalService;
@@ -123,7 +124,7 @@ class AnimalServiceImplTest {
     }
 
     @Test
-    void testDeleteAnimalByName() {
+    public void testDeleteAnimalByNameOK() {
 
         AnimalEntity animalEntity = new AnimalEntity();
         animalEntity.setId(ID);
@@ -131,11 +132,18 @@ class AnimalServiceImplTest {
 
         when(animalRepository.findOneByName(ANIMAL)).thenReturn(animalEntity);
 
-        when(animalRepository.findOneById(ID)).thenReturn(animalEntity);
-
-        animalService.deleteAnimalByName(ANIMAL);
+        Boolean result = animalService.deleteAnimalByName(ANIMAL).getBody();
 
         verify(animalRepository, times(1)).findOneByName(anyString());
-        verify(animalRepository, times(1)).deleteById(anyInt());
+        assertEquals(Boolean.TRUE, result);
+    }
+
+    @Test
+    public void testDeleteAnimalByNameFAIL() {
+
+        Boolean result = animalService.deleteAnimalByName(ANIMAL_FAIL).getBody();
+
+        verify(animalRepository, times(1)).findOneByName(anyString());
+        assertEquals(Boolean.FALSE, result);
     }
 }

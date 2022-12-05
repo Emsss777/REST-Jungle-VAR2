@@ -24,6 +24,7 @@ class FoodServiceImplTest {
 
     public static final String FOOD = "leaves";
     public static final String FOOD_NEW = "nuts";
+    public static final String FOOD_FAIL = "mouse";
 
     @Autowired
     FoodService foodService;
@@ -46,6 +47,8 @@ class FoodServiceImplTest {
 
         assertNotNull(savedFoodDTO);
         assertEquals(FOOD_NEW, savedFoodDTO.getName());
+
+        foodService.deleteFoodByName(Objects.requireNonNull(savedFoodDTO).getName()).getBody();
     }
 
     @Test
@@ -59,5 +62,28 @@ class FoodServiceImplTest {
         FoodDTO savedFoodDTO = foodService.createNewFood(testFoodDTO).getBody();
 
         assertNull(savedFoodDTO);
+    }
+
+    @Test
+    public void testDeleteFoodByNameOK() {
+
+        List<FoodEntity> foods = foodRepository.findAll();
+        FoodEntity testFoodEntity = foods.iterator().next();
+        FoodDTO testFoodDTO = foodEntityToFoodDTO.convert(testFoodEntity);
+
+        Objects.requireNonNull(testFoodDTO).setName(FOOD_NEW);
+        FoodDTO savedFoodDTO = foodService.createNewFood(testFoodDTO).getBody();
+
+        Boolean result = foodService.deleteFoodByName(Objects.requireNonNull(savedFoodDTO).getName()).getBody();
+
+        assertEquals(Boolean.TRUE, result);
+    }
+
+    @Test
+    public void testDeleteFoodByNameFAIL() {
+
+        Boolean result = foodService.deleteFoodByName(FOOD_FAIL).getBody();
+
+        assertEquals(Boolean.FALSE, result);
     }
 }
